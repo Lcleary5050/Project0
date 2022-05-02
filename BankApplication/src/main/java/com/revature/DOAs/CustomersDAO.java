@@ -2,55 +2,16 @@ package com.revature.DOAs;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.revature.Interfaces.CustomersInterface;
 import com.revature.models.CustomersModel;
 
-public class CustomersDAO implements CustomersInterface<CustomersModel, String> {
+public class CustomersDAO implements CustomersInterface {
 
 	private Connection conn = ConnectionManager.getConnection();
 
-	@Override
-	public void create(CustomersModel element) {
-		
-		try {
-			PreparedStatement statement = conn.prepareStatement("INSERT INTO Customers VALUES(?,?,?,?,?,?,?");
-			
-			statement.setString(1, element.custUsername);
-			statement.setString(2, element.custPassword);
-			statement.setString(3, element.custFirstName);
-			statement.setString(4, element.custLastName);
-			statement.setString(5, element.custContact);
-			statement.setInt(6, element.adminID);
-			statement.setInt(7, element.empID);
-			
-		} catch (SQLException e ) {
-			e.printStackTrace();
-		}
-		
-	}
-
-	@Override
-	public CustomersModel get(String id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void update(CustomersModel element) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void delete(CustomersModel element) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
-	/*
 	public CustomersModel getUser(String custUsername, String custPassword) {
 		try {
 			
@@ -107,6 +68,5 @@ public class CustomersDAO implements CustomersInterface<CustomersModel, String> 
 		}
 	}
 
-*/
 
 }

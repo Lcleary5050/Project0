@@ -1,13 +1,11 @@
 package revature.BankApplication;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.revature.API.CustomerController;
 import com.revature.DOAs.AccountDAO;
 import com.revature.DOAs.AdminDAO;
-import com.revature.DOAs.CustomersDAO;
 import com.revature.DOAs.EmployeesDAO;
 import com.revature.models.AccountModel;
 import com.revature.models.AdminModel;
@@ -28,6 +26,7 @@ public class App
     	Javalin app = Javalin.create().start(7070);
     	CustomerController custcontroller = new CustomerController(app);
         
+    	String enteredUsername = "";
     	Scanner sc = new Scanner(System.in);
     	boolean loggedIn = false;
     	boolean isCustomer = false;
@@ -52,7 +51,7 @@ public class App
     			case 1:
     				System.out.println("Thank you for choosing to bank with Metroplois");
     				System.out.println("\nPlease enter a new username: ");
-    				String enteredUsername = sc.nextLine();
+    				enteredUsername = sc.nextLine();
     				
     				System.out.println("\nPlease enter a new password:");
     				String enteredPassword = sc.nextLine();
@@ -95,12 +94,52 @@ public class App
     				
     				System.out.println("Please enter password:");
     				enteredPassword = sc.nextLine();
-    				//if username/password is correct display that user where they match 
-    				System.out.println("Please enter username again to display account information.");
-    				String enteredAccount = sc.nextLine();
-    				// display account where username matches username 
     				
-    				//change balance/ apply for joint account
+    				AccountDAO accountsDAO = new AccountDAO();
+    				ArrayList<AccountModel> account = accountsDAO.getAccount(enteredUsername);
+    				
+    				for (AccountModel i: account) {
+    					System.out.println(i);
+    				}
+    				
+    				System.out.println("Please select an option below.");
+    				System.out.println("1. Deposit into account.");
+    				System.out.println("2. Withdrawl from account.");
+    				System.out.println("3. Apply for joint account with another user");
+    				System.out.println("4. Log out");
+    				
+    				int custOption = sc.nextInt();
+    				if (custOption == 1) {
+    					System.out.println("Please enter amount you would like to deposit:");
+    					
+    					double enteredDeposit = sc.nextDouble();
+    					
+    					AccountDAO accountDAO = new AccountDAO();
+    					ArrayList<AccountModel> adminAccountView =  accountDAO.withdrawlMoney(enteredUsername, enteredDeposit);
+    				}
+    				
+    				else if (custOption == 2) {
+
+    					System.out.println("Please enter amount you would like to withdrawl:");
+    					
+    					double enteredWithdrawl = sc.nextDouble();
+    					
+    					AccountDAO accountDAO = new AccountDAO();
+    					ArrayList<AccountModel> adminAccountView =  accountDAO.withdrawlMoney(enteredUsername, enteredWithdrawl);
+    				}
+    				else if (custOption == 3) {
+    					
+    					System.out.println("Please enter username of account you would like to apply for a joint account with.");
+    					String enterJoint = sc.nextLine();
+    					
+    				}
+    				else if (custOption == 4) {
+    					System.exit(0);
+    				}
+    				else {
+    					System.out.println("Please enter a vaild option");
+    				}
+    				
     				
     				loggedIn = true;
     				isCustomer = true;
@@ -195,13 +234,18 @@ public class App
     					System.out.println("\nPlease enter updated balance");
     					double enterBalance = sc.nextDouble();
     					
-    					//AdminDAO adminsDAO = new AdminDAO();
-    					//AdminModel adminAccountBal = adminsDAO.updateAdmin(enterUsername, enterBalance);
+    					AdminDAO adminsDAO = new AdminDAO();
+    					AdminModel adminAccountBal = adminsDAO.updateAdmin(enteredUsername, enterBalance);
     				}
     				else if (adminOption == 3) {
     					
     					System.out.println("Please enter username of account you would like to approver/deny:");
+    					String enterUsername = sc.nextLine();
+    					System.out.println("\nPlease enter (P) for pending, (A) for approved, (D) for denied");
+    					String enterApproval = sc.nextLine();
     					
+    					AdminDAO adminsDAO = new AdminDAO();
+    					AdminModel adminAccountBal = adminsDAO.jointApproval(enteredUsername, enterApproval);
     				}
     				else if (adminOption == 4) {
     					System.exit(0);

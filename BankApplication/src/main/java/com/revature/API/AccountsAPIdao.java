@@ -6,9 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.revature.DOAs.ConnectionManager;
-import com.revature.Interfaces.CustomersInterface;
 import com.revature.models.AccountModel;
-import com.revature.models.CustomersModel;
 
 public class AccountsAPIdao implements CustomerAPIinterface<AccountModel, String> {
 
@@ -18,15 +16,13 @@ public class AccountsAPIdao implements CustomerAPIinterface<AccountModel, String
 	public void create(AccountModel element) {
 		
 		try {
-			PreparedStatement statement = conn.prepareStatement("INSERT INTO Customers VALUES(?,?,?,?,?,?,?");
+			PreparedStatement statement = conn.prepareStatement("INSERT INTO Account VALUES(?,?,?,?,?)");
 			
-			statement.setString(1, element.custUsername);
-			statement.setString(2, element.custPassword);
-			statement.setString(3, element.custFirstName);
-			statement.setString(4, element.custLastName);
-			statement.setString(5, element.custContact);
-			statement.setInt(6, element.adminID);
-			statement.setInt(7, element.empID);
+			statement.setInt(1, element.accountNumber);
+			statement.setDouble(2, element.accountBalance);
+			statement.setString(3, element.approval);
+			statement.setInt(4, element.jointID);
+			statement.setString(5, element.accountUsername);
 			
 		} catch (SQLException e ) {
 			e.printStackTrace();
@@ -35,24 +31,23 @@ public class AccountsAPIdao implements CustomerAPIinterface<AccountModel, String
 	}
 
 	@Override
-	public CustomersModel get(String custUsername) {
+	public AccountModel get(String accountUsername) {
 		
 		try {
-			PreparedStatement statement = conn.prepareStatement("SELECT * FROM Customers WHERE cust_username = ?");
-			statement.setString(1, custUsername);
+			PreparedStatement statement = conn.prepareStatement("SELECT * FROM Account WHERE custUsername = ?");
+			statement.setString(1, accountUsername);
 			ResultSet rs = statement.executeQuery();
 			
 			if(rs.next()) {
-				CustomersModel c = new CustomersModel();
-				c.custUsername = custUsername;
-				c.custPassword = rs.getString("cust_password");
-				c.custFirstName = rs.getString("cust_firstname");
-				c.custLastName = rs.getString("cust_lastname");
-				c.custContact = rs.getString("cust_contact");
-				c.adminID = rs.getInt("admin_id");
-				c.empID = rs.getInt("emp_id");
+				AccountModel a = new AccountModel(0, 0, accountUsername, 0, accountUsername);
+				a.accountUsername = rs.getString("custUsername");
+				a.accountBalance = rs.getDouble("account_balance");
+				a.approval = rs.getString("approval");
+				a.jointID = rs.getInt("joint_id");
+				a.accountUsername = rs.getString("Account_num");
 				
-				return c;
+				
+				return a;
 			}
 		} catch (Exception e) {
 			
@@ -61,18 +56,17 @@ public class AccountsAPIdao implements CustomerAPIinterface<AccountModel, String
 	}
 
 	@Override
-	public void update(CustomersModel element) {
+	public void update(AccountModel element) {
 		
 		try {
-			PreparedStatement statement = conn.prepareStatement("UPDATE Customers SET cust_password = ?, cust_firstname = ?, cust_lastname = ?, cust_contact = ?, admin_id = ?, emp_id = ? WHERE cust_username = ?");
+			PreparedStatement statement = conn.prepareStatement("UPDATE Account SET Account_num = ?, account_balance = ?, approval = ?, joint_id = ?, custUsername = ? WHERE custUsername = ?");
 			
-			statement.setString(1, element.custPassword);
-			statement.setString(2, element.custFirstName);
-			statement.setString(3, element.custLastName);
-			statement.setString(4, element.custContact);
-			statement.setInt(5, element.adminID);
-			statement.setInt(6, element.empID);
-			statement.setString(7, element.custUsername);
+			statement.setInt(1, element.accountNumber);
+			statement.setDouble(2, element.accountBalance);
+			statement.setString(3, element.approval);
+			statement.setInt(4, element.jointID);
+			statement.setString(5, element.accountUsername);
+
 			
 			statement.executeQuery();
 		} catch (Exception e) {
@@ -82,17 +76,15 @@ public class AccountsAPIdao implements CustomerAPIinterface<AccountModel, String
 	}
 
 	@Override
-	public void delete(CustomersModel element) {
+	public void delete(AccountModel element) {
 		try {
-			PreparedStatement statement = conn.prepareStatement("DELETE FROM Customers WHERE cust_username = ?");
+			PreparedStatement statement = conn.prepareStatement("DELETE FROM Account WHERE custUsername = ?");
 			
-			statement.setString(1,  element.custUsername);
+			statement.setString(1,  element.accountUsername);
 			
 			statement.execute();
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
-
-}
+} 

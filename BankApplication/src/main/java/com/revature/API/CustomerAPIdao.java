@@ -16,7 +16,7 @@ public class CustomerAPIdao implements CustomerAPIinterface<CustomersModel, Stri
 	public void create(CustomersModel element) {
 		
 		try {
-			PreparedStatement statement = conn.prepareStatement("INSERT INTO Customers VALUES(?,?,?,?,?,?,?");
+			PreparedStatement statement = conn.prepareStatement("INSERT INTO Customers VALUES(?,?,?,?,?,?,?)");
 			
 			statement.setString(1, element.custUsername);
 			statement.setString(2, element.custPassword);

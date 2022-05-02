@@ -10,4 +10,5 @@ public interface CustomerAPIinterface <T, ID> {
 	
 	public void delete(T element);
 
+
 }

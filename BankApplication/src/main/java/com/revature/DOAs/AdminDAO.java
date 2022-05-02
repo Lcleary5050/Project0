@@ -39,7 +39,7 @@ public class AdminDAO implements AdminInterface {
 		} return null;
 	}
 		
-		public void updateAdmin(String accountUsername, double accountBal) {
+		public AdminModel updateAdmin(String accountUsername, double accountBal) {
 			
 			try {
 				String query = "UPDATE Accounts SET balance = ? WHERE custUsername = ?";
@@ -53,9 +53,10 @@ public class AdminDAO implements AdminInterface {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			return null;
 		}
 		
-		public void jointApproval(String accountUsername, String jointApprov) {
+		public AdminModel jointApproval(String accountUsername, String jointApprov) {
 			try {
 				String query = "UPDATE Accounts SET approval = ?  WHERE custUsername = ?";
 				PreparedStatement pstmt = conn.prepareStatement(query);
@@ -68,5 +69,6 @@ public class AdminDAO implements AdminInterface {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			return null;
 		}
 }

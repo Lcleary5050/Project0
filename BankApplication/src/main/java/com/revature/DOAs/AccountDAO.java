@@ -42,7 +42,7 @@ public ArrayList <AccountModel> getAccount(String accountUser) {
 		return null;
 		} 
 	
-	public void withdrawlMoney(String accountUsername, double withdrawlAmount) {
+	public ArrayList<AccountModel> withdrawlMoney(String accountUsername, double withdrawlAmount) {
 		
 		try {
 			String query = "UPDATE Accounts SET balance = balance - ? WHERE custUsername = ?";
@@ -56,6 +56,7 @@ public ArrayList <AccountModel> getAccount(String accountUser) {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return null;
 		}
 		
 		public void depositMoney(String accountUsername, double depositAmount) {

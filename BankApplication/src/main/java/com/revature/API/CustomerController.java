@@ -20,7 +20,7 @@ public class CustomerController {
 	}
 	
 	public Handler getHandler = ctx -> {
-		String username = ctx.pathParam("custUsername");
+		String username = ctx.pathParam("cust_username");
 		
 		CustomersModel customer = dao.get(username);
 		ctx.json(customer);
